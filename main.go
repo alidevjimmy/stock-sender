@@ -5,8 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"sync"
-	"time"
 )
 
 const (
@@ -35,7 +33,7 @@ type ReqBody struct {
 	ValidityType             int    `json:"validityType`
 }
 
-func sendRequest(wg *sync.WaitGroup, i *int) {
+func sendRequest(i *int) {
 	fmt.Println("Sending Request ", *i, "...")
 	*i++
 	// time.Sleep(time.Second * 1)
@@ -47,13 +45,16 @@ func sendRequest(wg *sync.WaitGroup, i *int) {
 		FinanceID:                1,
 		// Isin:                     "IRO1LPRS0001", // ولپارس
 		// Isin: "IRO3SDFZ0001", // شصدف
-		Isin: "IRO3APOZ0001", // aria
+		// Isin: "IRO3APOZ0001", // aria
+		Isin: "IRO1TSAN0001", // amin
 		// Price: 3600, // vel,pars
 		// Price: 18356, // sh,sadaf
-		Price: 164880, // aria
+		// Price: 164880, // aria
+		Price: 10920, // amin
 		// Quantity: 1728, // vel,pars
 		// Quantity:           335, // sh,sadaf
-		Quantity:           37, // aria
+		// Quantity:           37, // aria
+		Quantity:           568, // amin
 		ReferenceKey:       "89c047ee-a1d2-4f58-8714-9c5601b35166",
 		Side:               0,
 		ValidityDateJalali: "1399/5/17",
@@ -81,18 +82,18 @@ func sendRequest(wg *sync.WaitGroup, i *int) {
 	// fmt.Printf("Status : %v\n", resp.Status)
 	// body, _ := ioutil.ReadAll(resp.Body)
 	// fmt.Printf("Body : %v\n", string(body))
-	wg.Done()
+	// wg.Done()
 }
 
 func main() {
-	var wg sync.WaitGroup
+	// var wg sync.WaitGroup
 	i := 1
 	for {
-		wg.Add(1)
-		time.Sleep(time.Microsecond * 150000)
-		go sendRequest(&wg, &i)
+		// wg.Add(1)
+		// time.Sleep(time.Microsecond * 150000)
+		sendRequest(&i)
 
 	}
 
-	wg.Wait()
+	// wg.Wait()
 }
