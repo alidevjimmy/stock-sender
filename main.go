@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"sync"
+	"time"
 )
 
 const (
@@ -47,10 +48,10 @@ func sendRequest(wg *sync.WaitGroup, i *int) {
 		// Isin:                     "IRO1LPRS0001", // ولپارس
 		// Isin: "IRO3SDFZ0001", // شصدف
 		Isin: "IRO3APOZ0001", // aria
-		// Price: 3600,           // vel,pars
+		// Price: 3600, // vel,pars
 		// Price: 18356, // sh,sadaf
 		Price: 164880, // aria
-		// Quantity:           1728, // vel,pars
+		// Quantity: 1728, // vel,pars
 		// Quantity:           335, // sh,sadaf
 		Quantity:           37, // aria
 		ReferenceKey:       "89c047ee-a1d2-4f58-8714-9c5601b35166",
@@ -85,10 +86,11 @@ func sendRequest(wg *sync.WaitGroup, i *int) {
 
 func main() {
 	var wg sync.WaitGroup
-	wg.Add(1000)
 	i := 1
 	for {
-		sendRequest(&wg, &i)
+		wg.Add(1)
+		time.Sleep(time.Microsecond * 150000)
+		go sendRequest(&wg, &i)
 
 	}
 
