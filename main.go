@@ -5,9 +5,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"strconv"
+	"sync"
+	"time"
 )
 
 const (
@@ -32,7 +35,7 @@ type ReqBody struct {
 	ValidityType             int    `json:"validityType`
 }
 
-func sendRequest(i *int, auth, id string, quantity, price int) {
+func sendRequest(i *int, auth, id string, quantity, price int, wg *sync.WaitGroup) {
 	fmt.Println("Sending Request ", *i, "...")
 	*i++
 	// time.Sleep(time.Second * 1)
@@ -67,12 +70,15 @@ func sendRequest(i *int, auth, id string, quantity, price int) {
 	if err != nil {
 		panic(err)
 	}
-
+	if resp.StatusCode != 200 {
+		log.Fatalf("excepted status code is 200 : now is %d", resp.StatusCode)
+	}
 	defer resp.Body.Close()
-
+	wg.Done()
 }
 
 func main() {
+	var wg sync.WaitGroup
 	scanner := bufio.NewScanner(os.Stdin)
 	data := make([]string, 4)
 	var ii uint8 = 0
@@ -85,6 +91,9 @@ func main() {
 	quantity, _ := strconv.ParseInt(data[3], 10, 32)
 	i := 1
 	for {
-		sendRequest(&i, data[0], data[1], int(quantity), int(price))
+		wg.Add(1)
+		time.Sleep(time.Microsecond * 10000)
+		go sendRequest(&i, data[0], data[1], int(quantity), int(price), &wg)
 	}
+	wg.Wait()
 }
