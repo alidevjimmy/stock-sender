@@ -43,9 +43,9 @@ func sendRequest(i *int) {
 		CautionAgreementSelected: false,
 		EasySource:               1,
 		FinanceID:                1,
-		Isin:                     "IRO3APOZ0001", // aria
-		Price:                    171463,         // aria
-		Quantity:                 36,             // aria
+		Isin:                     "IRO1SITA0001", // sita
+		Price:                    24710,          // sita
+		Quantity:                 250,            // sita
 		ReferenceKey:             "89c047ee-a1d2-4f58-8714-9c5601b35166",
 		Side:                     0,
 		ValidityDateJalali:       "1399/5/17",
